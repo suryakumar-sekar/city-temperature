@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div>
+		<input type="text" name="input" id="get" required ="required">
+		<button id="op">submit</button>
+		<p id="temp"></p>
+	</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+
+  	$(document).on("click","#op",function(){
+  		var city = $("#get").val();
+  		if(city.length!=0||city!=''){
+  			var searchtext = "select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='c'"
+  
+			  $.ajax({
+			  type: 'GET',
+			  url: 'https://query.yahooapis.com/v1/public/yql?q=' + searchtext + '&format=json',
+			  success: function(data) {
+       		  $('#temp').html("Temperature in " + city + " is " + data.query.results.channel.item.condition.temp + "°C");
+ 							 }
+		             });
+  		           }
+  		else{
+  			alert("enter the city name")
+  		    }
+  	})
+});
+</script>
+</body>
+</html>
